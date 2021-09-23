@@ -1,0 +1,18 @@
+
+
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    group 'com.springroe.data'
+    version = project.rootProject.version
+
+    apply plugin: 'java-library'
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}

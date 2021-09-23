@@ -1,0 +1,1 @@
+package com.springroe.data.core.entity;
