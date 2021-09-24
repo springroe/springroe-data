@@ -1,1 +1,0 @@
-package com.springroe.data.core.domain;

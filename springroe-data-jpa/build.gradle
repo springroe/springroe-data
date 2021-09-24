@@ -3,6 +3,12 @@ plugins {
 }
 
 dependencies {
+
+    implementation project(":springroe-data-core")
+    implementation 'org.springframework.data:spring-data-commons:2.5.5'
+    implementation 'org.springframework.data:spring-data-jpa:2.5.5'
+    implementation 'com.querydsl:querydsl-core:5.0.0'
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }

@@ -1,7 +1,6 @@
-package com.springroe.data.core.entity;
+package io.github.springroe.data.core.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.util.ClassUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,21 +13,22 @@ public interface Entity<ID extends Serializable> extends Serializable {
     void setId(ID id);
 
     /**
-     * 创建时间
+     * @return 创建时间
      */
     Date getCreateTime();
 
+    /**
+     * @param createTime 创建时间
+     */
     void setCreateTime(Date createTime);
 
     /**
      * 最后修改时间
+     * @return void
      */
     Date getLastModifiedTime();
 
     void getLastModifiedTime(Date lastModifiedTime);
 
-
-    boolean swaggerPresent = ClassUtils.isPresent("io.swagger.annotations.ApiModel", Entity.class.getClassLoader());
-    boolean swaggerV3Present = ClassUtils.isPresent("io.swagger.v3.oas.annotations.media.Schema", Entity.class.getClassLoader());
 
 }

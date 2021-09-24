@@ -1,4 +1,4 @@
-package com.springroe.data.core.exception;
+package io.github.springroe.data.core.exception;
 
 public abstract class AbstractException extends RuntimeException {
     String errorCode = null;

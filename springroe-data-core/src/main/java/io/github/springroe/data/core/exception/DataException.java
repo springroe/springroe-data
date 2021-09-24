@@ -1,4 +1,4 @@
-package com.springroe.data.core.exception;
+package io.github.springroe.data.core.exception;
 
 public class DataException extends AbstractException{
 

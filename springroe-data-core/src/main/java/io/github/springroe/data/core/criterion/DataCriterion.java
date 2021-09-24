@@ -1,12 +1,13 @@
-package com.springroe.data.core.criterion;
+package io.github.springroe.data.core.criterion;
 
-import com.springroe.data.core.entity.Entity;
-import com.springroe.data.core.exception.DataException;
-import io.swagger.annotations.ApiModel;
+import io.github.springroe.data.core.entity.Entity;
+import io.github.springroe.data.core.exception.DataException;
+import io.github.springroe.data.core.util.EntityUtils;
 import org.springframework.cglib.core.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 
@@ -75,6 +76,23 @@ public interface DataCriterion<T extends Entity<ID>, ID extends Serializable> ex
      */
     Iterable<T> findAllById(Iterable<ID> ids);
 
+
+    /**
+     * Returns all entities sorted by the given options.
+     *
+     * @param sort
+     * @return all entities sorted by the given options
+     */
+    Iterable<T> findAll(Sort sort);
+
+    /**
+     * Returns a {@link Page} of entities meeting the paging restriction provided in the {@code Pageable} object.
+     *
+     * @param pageable
+     * @return a page of entities
+     */
+    Page<T> findAll(Pageable pageable);
+
     /**
      * Returns the number of entities available.
      *
@@ -141,28 +159,23 @@ public interface DataCriterion<T extends Entity<ID>, ID extends Serializable> ex
         return findAll(predicate, PageRequest.of(0, 1)).stream().findFirst();
     }
 
-
     default T findFirstNotEmpty(Predicate predicate) {
         return firstNotEmptyCheck(findAll(predicate, PageRequest.of(0, 1)));
     }
 
-
     default T optionalNotEmptyCheck(Optional<T> result) {
+
         if (!result.isPresent()) {
-            ApiModel apiModel = getEntityClass().getAnnotation(ApiModel.class);
-            String name = apiModel.value();
-            if (name.equals("")) {
-                name = "对象";
-            }
+            String name = EntityUtils.getEntityComment(getEntityClass());
             throw new DataException(name + "不存在");
         }
         return result.get();
     }
 
-
     default T firstNotEmptyCheck(Page<T> result) {
         if (result.isEmpty()) {
-            throw new DataException("对象不存在");
+            String name = EntityUtils.getEntityComment(getEntityClass());
+            throw new DataException(name + "不存在");
         }
         return optionalNotEmptyCheck(result.stream().findFirst());
     }
