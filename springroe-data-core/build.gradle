@@ -1,66 +1,9 @@
-plugins {
-    id 'java'
-    id 'maven-publish'
-    id 'signing'  // 组件签名插件
-}
 
 dependencies {
-    implementation 'org.springframework.data:spring-data-commons:2.5.5'
-    // https://mvnrepository.com/artifact/com.querydsl/querydsl-core
-    implementation 'com.querydsl:querydsl-core:5.0.0'
+    implementation "org.springframework.data:spring-data-commons:2.6.1"
 
-    implementation 'com.github.jitpack:gradle-simple:1.0'
+    implementation "com.github.jitpack:gradle-simple:1.1"
 
-    implementation 'io.swagger.core.v3:swagger-annotations:2.1.10'
-    implementation 'io.swagger:swagger-annotations:1.6.2'
-
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-}
-
-test {
-    useJUnitPlatform()
-}
-task sourceJar(type: Jar) {
-    from sourceSets.main.allJava
-    classifier "sources" //定义一个标志 (生成的jar包后面加上sources, 如: jlib-2.2.11-sources.jar)
-}
-
-task javadocJar(type: Javadoc) {
-    source = sourceSets.main.allJava
-    options.encoding 'utf-8'
-}
-
-task myJavadocs(type: Javadoc) {
-    source = sourceSets.main.allJava
-    options.encoding 'utf-8'
-}
-
-javadoc {
-    options.charSet = 'UTF-8'
-    options.encoding = 'UTF-8'
-}
-
-publishing {
-    repositories {
-        maven {
-            name = 'OSSRH'
-            url = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-            credentials {
-                username = 'kongsiyu'
-                password = 'Ksy@282818403'
-            }
-        }
-    }
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            artifact sourceJar
-            // artifact javadocJar
-        }
-    }
-}
-
-signing {
-    sign publishing.publications.mavenJava
+    implementation "io.swagger.core.v3:swagger-annotations:2.1.12"
+    implementation "io.swagger:swagger-annotations:1.6.5"
 }

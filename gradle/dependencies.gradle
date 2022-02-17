@@ -1,0 +1,19 @@
+ext {
+    springPluginVersion = "2.0.0.RELEASE"
+    springBootVersion = "2.6.3"
+    lombokVersion = "1.18.22"
+    junitVersion = "5.8.2"
+
+
+    libs = [
+            spring            :
+                    [
+                            "org.springframework.plugin:spring-plugin-core:${springPluginVersion}",
+                            "org.springframework.plugin:spring-plugin-metadata:${springPluginVersion}",
+                    ],
+            springBootProvided:
+                    [
+                            "org.springframework.boot:spring-boot-autoconfigure:$springBootVersion"
+                    ]
+    ]
+}

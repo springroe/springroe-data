@@ -1,19 +1,64 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'signing'  // 组件签名插件
+    id "org.sonarqube" version "3.3"
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "springroe_springroe-data"
+        property "sonar.organization", "springroe"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}
+
+apply from: "$rootDir/gradle/dependencies.gradle"
 
 allprojects {
     repositories {
         mavenCentral()
         maven { url 'https://jitpack.io' }
     }
-
 }
 
+
 subprojects {
-    group 'io.github.springroe'
-    version = '0.0.1-SNAPSHOT'
 
     apply plugin: 'java-library'
 
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+
+    group 'io.github.springroe'
+    version = '0.0.2-SNAPSHOT'
+
+    dependencies {
+        // https://mvnrepository.com/artifact/com.querydsl/querydsl-core
+        implementation "com.querydsl:querydsl-core:5.0.0"
+
+        // https://mvnrepository.com/artifact/org.projectlombok/lombok
+        compileOnly "org.projectlombok:lombok:$lombokVersion"
+        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+        testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+        testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+        testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+    }
+
+    javadoc {
+        options.encoding = 'UTF-8'
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        options.deprecation = true
+        options.compilerArgs += ["-Xlint:unchecked", "-Xlint:deprecation", "-parameters"]
+    }
+
+    apply from: "$rootDir/gradle/publishing.gradle"
+
 }
 

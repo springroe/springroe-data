@@ -1,0 +1,11 @@
+allprojects {
+    apply plugin: "idea"
+//  apply plugin: "eclipse"
+}
+
+idea {
+    project {
+        languageLevel = '11'
+        vcs = 'Git'
+    }
+}
