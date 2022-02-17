@@ -6,9 +6,11 @@ import org.springframework.util.ClassUtils;
 public class EntityUtils {
 
 
-    static final boolean swaggerPresent = ClassUtils.isPresent("io.swagger.annotations.ApiModel", Entity.class.getClassLoader());
-    static final boolean swaggerV3Present = ClassUtils.isPresent("io.swagger.v3.oas.annotations.media.Schema", Entity.class.getClassLoader());
+    static final boolean SWAGGER_PRESENT = ClassUtils.isPresent("io.swagger.annotations.ApiModel", Entity.class.getClassLoader());
+    static final boolean SWAGGER_V3_PRESENT = ClassUtils.isPresent("io.swagger.v3.oas.annotations.media.Schema", Entity.class.getClassLoader());
 
+    private EntityUtils() {
+    }
 
     /**
      * 根据entity class 获取 entity 注释 <br>
@@ -20,11 +22,11 @@ public class EntityUtils {
     public static String getEntityComment(Class<?> entityClass) {
         String name = null;
 
-        if (swaggerPresent) {
+        if (SWAGGER_PRESENT) {
             io.swagger.annotations.ApiModel apiModel = entityClass.getAnnotation(io.swagger.annotations.ApiModel.class);
             if (apiModel != null) name = apiModel.value();
         }
-        if (name == null && swaggerV3Present) {
+        if (name == null && SWAGGER_V3_PRESENT) {
             io.swagger.v3.oas.annotations.media.Schema schema = entityClass.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
             if (schema != null) name = schema.name();
         }

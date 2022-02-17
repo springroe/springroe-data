@@ -80,7 +80,7 @@ public interface DataCriterion<T extends Entity<ID>, ID extends Serializable> ex
     /**
      * Returns all entities sorted by the given options.
      *
-     * @param sort
+     * @param sort spring data sore param
      * @return all entities sorted by the given options
      */
     Iterable<T> findAll(Sort sort);
@@ -88,7 +88,7 @@ public interface DataCriterion<T extends Entity<ID>, ID extends Serializable> ex
     /**
      * Returns a {@link Page} of entities meeting the paging restriction provided in the {@code Pageable} object.
      *
-     * @param pageable
+     * @param pageable spring data page param
      * @return a page of entities
      */
     Page<T> findAll(Pageable pageable);
@@ -195,7 +195,6 @@ public interface DataCriterion<T extends Entity<ID>, ID extends Serializable> ex
      * @return the saved entity; will never be null.
      * @throws IllegalArgumentException in case the given entity is null.
      */
-
     default <S extends T> S update(S entity) {
         if (entity.getId() == null) throw new DataException("id can not be empty!");
         return save(entity);
