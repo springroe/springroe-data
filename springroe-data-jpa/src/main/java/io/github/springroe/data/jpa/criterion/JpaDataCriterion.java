@@ -1,7 +1,7 @@
 package io.github.springroe.data.jpa.criterion;
 
 import io.github.springroe.data.core.criterion.DataCriterion;
-import io.github.springroe.data.core.entity.Entity;
+import io.github.springroe.data.core.domain.Persistable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,14 +11,13 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
 
-public interface JpaDataCriterion<T extends Entity<ID>, ID extends Serializable> extends DataCriterion<T, ID>, JpaSpecificationExecutor<T> {
+public interface JpaDataCriterion<T extends Persistable<ID>, ID extends Serializable> extends DataCriterion<T, ID>, JpaSpecificationExecutor<T>, PathHelper {
 
     /**
      * @return @see javax.persistence.EntityManager
@@ -106,23 +105,6 @@ public interface JpaDataCriterion<T extends Entity<ID>, ID extends Serializable>
     }
 
 
-    default Path<?> getPath(Path<?> root, String name) {
-        return getPath(root, Arrays.stream(name.split("\\.")).collect(Collectors.toList()));
-    }
-
-    default Path<?> getPath(Path<?> root, List<String> names) {
-        Path<?> path = root.get(names.get(0));
-        if (names.size() == 1) {
-            return path;
-        } else {
-            return getPath(path, names.subList(1, names.size()));
-        }
-    }
-
-    default T findOneNotEmpty(Specification<T> spec) {
-        return optionalNotEmptyCheck(findOne(spec));
-    }
-
     default Optional<T> findFirst(Specification<T> spec) {
         return findAll(spec, PageRequest.of(0, 1)).getContent().stream().findFirst();
     }
@@ -141,6 +123,15 @@ public interface JpaDataCriterion<T extends Entity<ID>, ID extends Serializable>
      */
     Optional<T> findOne(@Nullable Specification<T> spec);
 
+
+    /**
+     *
+     * @param spec
+     * @return
+     */
+    default T findOneNotEmpty(Specification<T> spec) {
+        return optionalNotEmptyCheck(findOne(spec));
+    }
 
     /**
      * 获取列表结果：按spring data jpa标准进行匹配<br/>
