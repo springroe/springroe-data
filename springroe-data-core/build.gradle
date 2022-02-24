@@ -1,9 +1,4 @@
-
 dependencies {
-    implementation "org.springframework.data:spring-data-commons:2.6.1"
-
     implementation "com.github.jitpack:gradle-simple:1.1"
 
-    implementation "io.swagger.core.v3:swagger-annotations:2.1.12"
-    implementation "io.swagger:swagger-annotations:1.6.5"
 }

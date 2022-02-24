@@ -1,13 +1,13 @@
 package io.github.springroe.data.core.util;
 
-import io.github.springroe.data.core.entity.Entity;
+import io.github.springroe.data.core.domain.Persistable;
 import org.springframework.util.ClassUtils;
 
 public class EntityUtils {
 
 
-    static final boolean SWAGGER_PRESENT = ClassUtils.isPresent("io.swagger.annotations.ApiModel", Entity.class.getClassLoader());
-    static final boolean SWAGGER_V3_PRESENT = ClassUtils.isPresent("io.swagger.v3.oas.annotations.media.Schema", Entity.class.getClassLoader());
+    static final boolean SWAGGER_PRESENT = ClassUtils.isPresent("io.swagger.annotations.ApiModel", Persistable.class.getClassLoader());
+    static final boolean SWAGGER_V3_PRESENT = ClassUtils.isPresent("io.swagger.v3.oas.annotations.media.Schema", Persistable.class.getClassLoader());
 
     private EntityUtils() {
     }
@@ -28,7 +28,7 @@ public class EntityUtils {
         }
         if (name == null && SWAGGER_V3_PRESENT) {
             io.swagger.v3.oas.annotations.media.Schema schema = entityClass.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
-            if (schema != null) name = schema.name();
+            if (schema != null) name = schema.description();
         }
         if (name == null) {
             name = entityClass.getSimpleName();

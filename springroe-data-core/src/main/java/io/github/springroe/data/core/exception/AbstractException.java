@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 
+/**
+ * @author kongsiyu
+ */
 @AllArgsConstructor
 public abstract class AbstractException extends RuntimeException {
     @Getter

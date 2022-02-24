@@ -3,6 +3,9 @@ package io.github.springroe.data.core.exception;
 import lombok.Getter;
 import lombok.NonNull;
 
+/**
+ * @author kongsiyu
+ */
 public class UniqueConstraintDataException extends DataException {
 
     @NonNull
@@ -12,7 +15,7 @@ public class UniqueConstraintDataException extends DataException {
     @Getter
     private final String property;
 
-    public UniqueConstraintDataException( @NonNull Class<?> entityClass, @NonNull String property) {
+    public UniqueConstraintDataException(@NonNull Class<?> entityClass, @NonNull String property) {
         super("UniqueConstraintDataException");
         this.entityClass = entityClass;
         this.property = property;
