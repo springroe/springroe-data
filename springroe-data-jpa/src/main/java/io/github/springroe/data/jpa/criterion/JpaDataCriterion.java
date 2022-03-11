@@ -2,6 +2,7 @@ package io.github.springroe.data.jpa.criterion;
 
 import io.github.springroe.data.core.criterion.DataCriterion;
 import io.github.springroe.data.core.domain.Persistable;
+import org.hibernate.SessionFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,12 +18,22 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-public interface JpaDataCriterion<T extends Persistable<ID>, ID extends Serializable> extends DataCriterion<T, ID>, JpaSpecificationExecutor<T>, PathHelper {
+public interface JpaDataCriterion<T extends Persistable<ID>, ID extends Serializable>
+        extends DataCriterion<T, ID>,
+        JpaSpecificationExecutor<T>, PathHelper {
 
     /**
      * @return @see javax.persistence.EntityManager
      */
     EntityManager getEntityManager();
+
+    /**
+     *
+     * @return @see org.hibernate.SessionFactory
+     */
+    default SessionFactory getSessionFactory(){
+        return getEntityManager().unwrap(SessionFactory.class);
+    }
 
     /**
      * 以属性名称和属性值按equal的方式进行匹配<br/>
@@ -125,7 +136,6 @@ public interface JpaDataCriterion<T extends Persistable<ID>, ID extends Serializ
 
 
     /**
-     *
      * @param spec
      * @return
      */

@@ -3,8 +3,11 @@ plugins {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    implementation project(":springroe-data-core")
+    implementation "io.easybest:spring-data-mybatis-boot-starter:2.0.1.RELEASE"
+    // https://mvnrepository.com/artifact/org.mybatis/mybatis
+    implementation "org.mybatis:mybatis:$mybatisVersion"
+
 }
 
 test {

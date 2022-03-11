@@ -26,7 +26,7 @@ import java.util.Optional;
  * @param <ID> type of primary key
  * @author kongsiyu
  */
-public interface DataCriterion<T extends Persistable<ID>, ID extends Serializable> extends SpringDataCriterion<T, ID>, QuerydslPredicateExecutor<T>, QueryByExampleExecutor<T> {
+public interface DataCriterion<T extends Persistable<ID>, ID extends Serializable> extends SpringDataCriterion<T, ID>, QuerydslPredicateExecutor<T>, QueryByExampleExecutor<T>, QuerydslExtensions<T> {
 
 
     /**

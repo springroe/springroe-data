@@ -31,17 +31,17 @@ subprojects {
     targetCompatibility = JavaVersion.VERSION_1_8
 
     group 'io.github.springroe'
-    version = '0.0.2-SNAPSHOT'
+    version = '0.0.1-SNAPSHOT'
 
     dependencies {
 
-        implementation "org.springframework.data:spring-data-commons:2.6.1"
+        implementation "org.springframework.data:spring-data-commons:$springDataCommonVersion"
 
-        implementation "io.swagger.core.v3:swagger-annotations:2.1.12"
+        implementation "io.swagger.core.v3:swagger-annotations:$swaggerVersion"
         implementation "io.swagger:swagger-annotations:1.6.5"
 
         // https://mvnrepository.com/artifact/com.querydsl/querydsl-core
-        implementation "com.querydsl:querydsl-core:5.0.0"
+        implementation "com.querydsl:querydsl-core:$querydslVersion"
 
         // https://mvnrepository.com/artifact/org.projectlombok/lombok
         compileOnly "org.projectlombok:lombok:$lombokVersion"
