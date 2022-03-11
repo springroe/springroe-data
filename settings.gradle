@@ -3,4 +3,5 @@ include 'springroe-data-core'
 include 'springroe-data-jpa'
 include 'springroe-data-mybatis'
 include 'springroe-data-mongo'
+include 'springroe-data-redis'
 
