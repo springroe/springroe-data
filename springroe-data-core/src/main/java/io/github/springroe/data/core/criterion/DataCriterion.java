@@ -3,6 +3,7 @@ package io.github.springroe.data.core.criterion;
 import io.github.springroe.data.core.domain.Persistable;
 import io.github.springroe.data.core.exception.DataException;
 import io.github.springroe.data.core.util.EntityUtils;
+import lombok.NonNull;
 import org.springframework.cglib.core.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -125,7 +126,7 @@ public interface DataCriterion<T extends Persistable<ID>, ID extends Serializabl
      * @param result one size query result
      * @return not null result value
      */
-    default T optionalNotEmptyCheck(Optional<T> result) {
+    default T optionalNotEmptyCheck(@NonNull Optional<T> result) {
         if (!result.isPresent()) {
             String name = EntityUtils.getEntityComment(getEntityClass());
             throw new DataException(name + "不存在");
@@ -139,7 +140,7 @@ public interface DataCriterion<T extends Persistable<ID>, ID extends Serializabl
      * @param result collection query result
      * @return not null result value
      */
-    default T firstNotEmptyCheck(Page<T> result) {
+    default T firstNotEmptyCheck(@NonNull Page<T> result) {
         if (result.isEmpty()) {
             String name = EntityUtils.getEntityComment(getEntityClass());
             throw new DataException(name + "不存在");

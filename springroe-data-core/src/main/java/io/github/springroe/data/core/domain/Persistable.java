@@ -76,6 +76,13 @@ public interface Persistable<ID extends Serializable> extends org.springframewor
 
     @Override
     default boolean isNew() {
-        return getId() == null || getId().toString().isEmpty();
+        ID id = getId();
+        if (id == null) {
+            return true;
+        }
+        if (id instanceof String) {
+            return id.toString().isEmpty();
+        }
+        return false;
     }
 }
