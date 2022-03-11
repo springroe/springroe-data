@@ -31,7 +31,7 @@ subprojects {
     targetCompatibility = JavaVersion.VERSION_1_8
 
     group 'io.github.springroe'
-    version = '0.0.1-SNAPSHOT'
+    version = springroeVersion
 
     dependencies {
 

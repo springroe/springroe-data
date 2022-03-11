@@ -1,4 +1,8 @@
+def versionFile = rootProject.file('.version')
+assert versionFile.exists()
+def version = versionFile.text
 ext {
+    springroeVersion = version
     junitVersion = "5.8.2"
     lombokVersion = "1.18.22"
     springPluginVersion = "2.0.0.RELEASE"
