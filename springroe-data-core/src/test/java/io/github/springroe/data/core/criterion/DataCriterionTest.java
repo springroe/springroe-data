@@ -103,16 +103,6 @@ class DataCriterionTest {
         }
 
         @Override
-        public Optional<TestEntity> findOne(Predicate predicate) {
-            return Optional.empty();
-        }
-
-        @Override
-        public Page<TestEntity> findAll(Predicate predicate, Pageable pageable) {
-            return null;
-        }
-
-        @Override
         public <S extends TestEntity> S save(S entity) {
             return null;
         }
