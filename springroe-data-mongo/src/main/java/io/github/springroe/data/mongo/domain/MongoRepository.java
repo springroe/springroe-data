@@ -3,7 +3,11 @@ package io.github.springroe.data.mongo.domain;
 import io.github.springroe.data.core.criterion.DataCriterion;
 import io.github.springroe.data.core.domain.Persistable;
 import io.github.springroe.data.core.repository.Repository;
+import io.github.springroe.data.core.util.RepositoryUtils;
 import io.github.springroe.data.mongo.criterion.MongoDataCriterion;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.repository.support.SimpleMongoRepository;
 
 import java.io.Serializable;
 
@@ -17,10 +21,16 @@ import java.io.Serializable;
  * @see DataCriterion
  * @see Repository
  */
-public interface MongoRepository<T extends Persistable<ID>, ID extends Serializable> extends
-        Repository<T, ID>,
-        org.springframework.data.mongodb.repository.MongoRepository<T, ID>,
-        MongoDataCriterion<T, ID> {
+public interface MongoRepository<T extends Persistable<ID>, ID extends Serializable> extends Repository<T, ID>, org.springframework.data.mongodb.repository.MongoRepository<T, ID>, MongoDataCriterion<T, ID> {
 
 
+    @Override
+    default MongoOperations getOperations() {
+        return (MongoOperations) RepositoryUtils.getSpringProxyRepositoryFieldValue(this, SimpleMongoRepository.class, "mongoOperations");
+    }
+
+    @Override
+    default MongoTemplate getTemplate() {
+        return (MongoTemplate) getOperations();
+    }
 }

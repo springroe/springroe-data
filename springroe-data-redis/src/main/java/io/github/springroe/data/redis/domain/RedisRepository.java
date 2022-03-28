@@ -21,5 +21,4 @@ public interface RedisRepository<T extends Persistable<ID>, ID extends Serializa
         Repository<T, ID>,
         RedisDataCriterion<T, ID> {
 
-
 }
