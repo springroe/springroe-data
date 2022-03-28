@@ -3,6 +3,7 @@ package io.github.springroe.data.jpa.repository;
 import io.github.springroe.data.core.criterion.DataCriterion;
 import io.github.springroe.data.core.domain.Persistable;
 import io.github.springroe.data.core.repository.Repository;
+import io.github.springroe.data.core.util.RepositoryUtils;
 import io.github.springroe.data.jpa.criterion.JpaDataCriterion;
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.data.jpa.repository.support.JpaMetamodelEntityInformation;
@@ -47,16 +48,12 @@ public interface JpaRepository<T extends Persistable<ID>, ID extends Serializabl
     }
 
     default SimpleJpaRepository<T, ID> getSimpleJpaRepository() {
-        return (SimpleJpaRepository<T, ID>) AopProxyUtils.getSingletonTarget(this);
+        return (SimpleJpaRepository<T, ID>) RepositoryUtils.getSpringProxyRepository(this);
     }
 
 
     @Nullable
     default Object getSimpleJpaRepositoryFieldValue(String fieldName) {
-        Field field = ReflectionUtils.findField(SimpleJpaRepository.class, fieldName);
-        assert field != null;
-        field.setAccessible(true);
-        return ReflectionUtils.getField(field, getSimpleJpaRepository());
-
+        return RepositoryUtils.getSpringProxyRepositoryFieldValue(this, SimpleJpaRepository.class, fieldName);
     }
 }
