@@ -49,18 +49,13 @@ public interface MybatisRepository<T extends Persistable<ID>, ID extends Seriali
     @SuppressWarnings("unchecked")
     @Override
     default Class<T> getEntityClass() {
-        MybatisEntityInformation<T, ID> info = (MybatisEntityInformation<T, ID>) getSimpleMybatisRepositoryFieldValue("entityInformation");
+        MybatisEntityInformation<T, ID> info = (MybatisEntityInformation<T, ID>) getDefaultMybatisRepositoryFieldValue("entityInformation");
         assert info != null;
         return info.getJavaType();
     }
 
-    @SuppressWarnings("unchecked")
-    default SimpleMybatisRepository<T, ID> getSimpleMybatisRepository() {
-        return (SimpleMybatisRepository<T, ID>) RepositoryUtils.getSpringProxyRepository(this);
-    }
-
     @Nullable
-    default Object getSimpleMybatisRepositoryFieldValue(String fieldName) {
+    default Object getDefaultMybatisRepositoryFieldValue(String fieldName) {
         return RepositoryUtils.getSpringProxyRepositoryFieldValue(this, SimpleMybatisRepository.class, fieldName);
     }
 
@@ -125,11 +120,10 @@ public interface MybatisRepository<T extends Persistable<ID>, ID extends Seriali
         QueryCondition qc = getQc(getEntityClass().getSimpleName());
         for (int i = 0; i < joinPath.length; i++) {
             String join = joinPath[i];
-            String alias = join;
             if (i > 0) {
-                qc.createAlias(joinPath[i - 1] + "." + join, alias, joinType);
+                qc.createAlias(joinPath[i - 1] + "." + join, join, joinType);
             } else {
-                qc.createAlias(join, alias, joinType);
+                qc.createAlias(join, join, joinType);
             }
         }
         return listByQc(qc);
