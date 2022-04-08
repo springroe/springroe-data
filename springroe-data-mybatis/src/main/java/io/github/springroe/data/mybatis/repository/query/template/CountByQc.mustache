@@ -1,0 +1,38 @@
+<select id="{{statementName}}" resultMap="{{resultMap}}">
+    SELECT
+    <choose>
+        <when test="selectFragment.contains('distinct') or selectFragment.contains('DISTINCT')">
+            COUNT(${selectFragment}) as count
+        </when>
+        <otherwise>
+            <choose>
+                <when test="qc.distinct">
+                    COUNT(
+                        DISTINCT
+                        <choose>
+                            <when test="qc.alias != null and qc.alias != ''">
+                                ${qc.alias}.{{keyColumn}}
+                            </when>
+                            <otherwise>
+                                {{keyColumn}}
+                            </otherwise>
+                        </choose>
+                    ) as count
+                </when>
+                <otherwise>
+                    COUNT(1)
+                </otherwise>
+            </choose>
+        </otherwise>
+    </choose>
+    FROM ${fromFragment}
+    <if test="whereFragment neq null and whereFragment neq ''">
+        WHERE ${whereFragment}
+    </if>
+    <if test="groupByFragment neq null and groupByFragment neq ''">
+        ${groupByFragment}
+    </if>
+    <if test="orderByFragment neq null and orderByFragment neq ''">
+        ${orderByFragment}
+    </if>
+</select>

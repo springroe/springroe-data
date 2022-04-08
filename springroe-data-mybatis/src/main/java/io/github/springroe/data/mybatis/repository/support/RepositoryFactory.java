@@ -1,5 +1,6 @@
-package io.github.springroe.data.mybatis.repository;
+package io.github.springroe.data.mybatis.repository.support;
 
+import io.github.springroe.data.mybatis.repository.DefaultMybatisRepository;
 import io.github.springroe.data.mybatis.repository.query.RepositoryPrepareProcessor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.BeanFactory;

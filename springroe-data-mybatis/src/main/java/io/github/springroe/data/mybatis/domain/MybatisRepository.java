@@ -130,11 +130,11 @@ public interface MybatisRepository<T extends Persistable<ID>, ID extends Seriali
     }
 
     default QueryCondition getQc(String alias) {
-        return QueryCondition.forAlias(alias);
+        return QueryCondition.forClass(getEntityClass(), alias);
     }
 
     default QueryCondition getQc() {
-        return QueryCondition.getInstance();
+        return QueryCondition.forClass(getEntityClass());
     }
 
 

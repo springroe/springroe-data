@@ -1,4 +1,4 @@
-package io.github.springroe.data.mybatis.repository;
+package io.github.springroe.data.mybatis.repository.support;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.ObjectProvider;

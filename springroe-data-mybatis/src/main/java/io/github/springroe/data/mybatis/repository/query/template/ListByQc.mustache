@@ -1,0 +1,15 @@
+<select id="{{statementName}}" resultMap="{{resultMap}}">
+    SELECT
+        ${selectFragment}
+    FROM
+    ${fromFragment}
+    <if test="whereFragment neq null and whereFragment neq ''">
+        WHERE ${whereFragment}
+    </if>
+    <if test="groupByFragment neq null and groupByFragment neq ''">
+        ${groupByFragment}
+    </if>
+    <if test="orderByFragment neq null and orderByFragment neq ''">
+        ${orderByFragment}
+    </if>
+</select>

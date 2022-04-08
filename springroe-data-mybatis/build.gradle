@@ -5,6 +5,7 @@ plugins {
 dependencies {
     implementation project(":springroe-data-core")
     implementation "io.easybest:spring-data-mybatis-boot-starter:2.0.1.RELEASE"
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
     // https://mvnrepository.com/artifact/org.mybatis/mybatis
     implementation "org.mybatis:mybatis:$mybatisVersion"
 

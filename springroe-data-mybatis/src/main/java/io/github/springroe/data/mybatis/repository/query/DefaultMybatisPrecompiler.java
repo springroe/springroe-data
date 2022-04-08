@@ -15,71 +15,133 @@
  */
 package io.github.springroe.data.mybatis.repository.query;
 
-import com.samskivert.mustache.Mustache;
+import io.github.springroe.data.mybatis.repository.entity.PersistentEntityHelper;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.mapping.*;
 import org.apache.ibatis.session.Configuration;
-import org.springframework.data.mybatis.dialect.Dialect;
-import org.springframework.data.mybatis.dialect.internal.DatabaseMetaDataDialectResolutionInfoAdapter;
-import org.springframework.data.mybatis.dialect.internal.StandardDialectResolver;
+import org.apache.ibatis.type.TypeHandler;
+import org.springframework.data.mapping.PropertyHandler;
 import org.springframework.data.mybatis.mapping.MybatisMappingContext;
 import org.springframework.data.mybatis.mapping.MybatisPersistentEntity;
-import org.springframework.data.mybatis.repository.query.DefaultCollector;
-import org.springframework.data.mybatis.repository.query.EscapeCharacter;
-import org.springframework.data.mybatis.repository.query.MybatisPrecompiler;
+import org.springframework.data.mybatis.mapping.MybatisPersistentProperty;
 import org.springframework.data.repository.core.RepositoryInformation;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 /**
  * Simple mybatis precompiler.
  *
  * @author JARVIS SONG
  */
-class DefaultMybatisPrecompiler implements MybatisPrecompiler {
+class DefaultMybatisPrecompiler extends AbstractMybatisPrecompiler {
 
-    static final String DEFAULT_SEQUENCE_NAME = "seq_spring_data_mybatis";
-
-    protected final MybatisMappingContext mappingContext;
-
-    protected final Configuration configuration;
-
-    protected final String namespace;
-
-    protected final MybatisPersistentEntity<?> persistentEntity;
-
-    protected final Dialect dialect;
-
-    protected Class<?> repositoryInterface;
-
-    protected EscapeCharacter escape;
-
-    private final Mustache.Compiler mustache;
-
-    DefaultMybatisPrecompiler(MybatisMappingContext mappingContext, Configuration configuration,
-                              RepositoryInformation repositoryInformation) {
-        this(mappingContext, configuration, repositoryInformation.getDomainType());
-
-        this.repositoryInterface = repositoryInformation.getRepositoryInterface();
-    }
-
-    DefaultMybatisPrecompiler(MybatisMappingContext mappingContext, Configuration configuration, Class<?> domainType) {
-        this.mappingContext = mappingContext;
-        this.configuration = configuration;
-        this.namespace = domainType.getName();
-        this.persistentEntity = mappingContext.getRequiredPersistentEntity(domainType);
-        this.dialect = StandardDialectResolver.INSTANCE.resolveDialect(
-                new DatabaseMetaDataDialectResolutionInfoAdapter(configuration.getEnvironment().getDataSource()));
-        this.mustache = Mustache.compiler().withLoader(name -> {
-            String path = "io/github/springroe/data/mybatis/repository/query/template/" + name + ".mustache";
-            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(path);
-            return new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-        }).escapeHTML(false).withCollector(new DefaultCollector());
+    DefaultMybatisPrecompiler(MybatisMappingContext mappingContext, Configuration configuration, RepositoryInformation repositoryInformation) {
+        super(mappingContext, configuration, repositoryInformation);
     }
 
     @Override
-    public void precompile() {
-        //TODO 预编译mybatis执行脚本
+    protected String doPrecompile() {
+        createResultMap();
+        StringBuilder sb = new StringBuilder();
+        sb.append(addCountByQc());
+        sb.append(addListByQc());
+        sb.append(addCreatePageListByQc());
+        sb.append(addFindTuple());
+        return sb.toString();
+    }
+
+    private String addCountByQc() {
+        return "";
+    }
+
+    private String addListByQc() {
+        return "";
+    }
+
+    private String addCreatePageListByQc() {
+        return "";
+    }
+
+    private String addFindTuple() {
+        return "";
+    }
+
+    @Override
+    protected List<MappedStatement> doPrecompileMappedStatements() {
+        return Collections.emptyList();
+    }
+
+    private void createResultMap() {
+        //TODO 创建resultMap
+    }
+
+    private static ResultMap getResultMap(Class<?> rootEntityClass,
+                                          Class<?> prevEntityClass,
+                                          Class<?> currentEntityClass,
+                                          String propertyPath,
+                                          Configuration configuration,
+                                          boolean nested) {
+        List<ResultMapping> resultMappings = new ArrayList<>();
+        MybatisPersistentEntity<?> persistentEntity = PersistentEntityHelper.persistentEntity(currentEntityClass);
+        MybatisPersistentProperty idProperty = persistentEntity.getIdProperty();
+        String keyProperty = idProperty.getName();
+        Class<?> keyType = PersistentEntityHelper.getPropertyType(idProperty);
+        String keyPropertyPath = keyProperty;
+        if (StringUtils.isNotBlank(propertyPath)) {
+            keyPropertyPath = propertyPath + "." + keyPropertyPath;
+        }
+        ResultMapping.Builder idResultMappingBuilder = new ResultMapping
+                .Builder(configuration, keyProperty, PersistentEntityHelper.getPropertyColumnAlias(rootEntityClass, keyPropertyPath.split("\\.")), keyType);
+        idResultMappingBuilder.flags(Arrays.asList(ResultFlag.ID));
+        resultMappings.add(idResultMappingBuilder.build());
+        persistentEntity.doWithProperties((PropertyHandler<MybatisPersistentProperty>) persistentProperty -> {
+            ResultMapping.Builder resultMappingBuilder = null;
+            String property = persistentProperty.getName();
+            String fullPropertyPath = property;
+            Class<?> propertyType = PersistentEntityHelper.getPropertyType(persistentProperty);
+            if (StringUtils.isNotBlank(propertyPath)) {
+                fullPropertyPath = propertyPath + "." + property;
+            }
+            String column = persistentProperty.getColumn().getName().getText();
+            if (StringUtils.isNotBlank(column)) {
+                column = PersistentEntityHelper.getPropertyColumnAlias(rootEntityClass, fullPropertyPath.split("\\."));
+            }
+            if (persistentProperty.isAssociation()) {
+                if (prevEntityClass != propertyType) {
+                    PersistentEntityHelper.AssociationType associationType = PersistentEntityHelper.associationType(persistentProperty);
+                    Class<?> javaType = propertyType;
+                    if (associationType == PersistentEntityHelper.AssociationType.OneToMany
+                            || associationType == PersistentEntityHelper.AssociationType.ManyToMany) {
+                        javaType = List.class;
+                    }
+                    ResultMap resultMap = getResultMap(rootEntityClass, currentEntityClass, propertyType, fullPropertyPath, configuration, true);
+                    resultMappingBuilder = new ResultMapping
+                            .Builder(configuration, property, column, javaType);
+                    configuration.addResultMap(resultMap);
+                    resultMappingBuilder.nestedResultMapId(resultMap.getId());
+                }
+            } else {
+                resultMappingBuilder = new ResultMapping
+                        .Builder(configuration, property, column, propertyType);
+                Class<? extends TypeHandler<?>> typeHandler = (Class<? extends TypeHandler<?>>) persistentProperty.getColumn().getTypeHandler();
+                if (null != typeHandler) {
+                    try {
+                        resultMappingBuilder.typeHandler(typeHandler.newInstance());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+            if (null != resultMappingBuilder) {
+                resultMappings.add(resultMappingBuilder.build());
+            }
+        });
+        String resultMapId = "BaseMapperResultMap";
+        if (nested) {
+            resultMapId = rootEntityClass.getSimpleName() + "." + propertyPath + "[" + UUID.randomUUID() + "-nested" + "]";
+        }
+        ResultMap.Builder builder = new ResultMap.Builder(configuration, resultMapId, currentEntityClass, resultMappings);
+        return builder.build();
     }
 
 }

@@ -26,13 +26,17 @@ public class QueryConditionImpl implements QueryCondition {
 
     private final Map<String, JoinType> fetchModes;
 
+    private Class<?> rootClass;
+
     private Projection projection;
 
     private boolean distinct;
 
     private final List<String> groupBy;
 
-    protected QueryConditionImpl(String alias) {
+    protected QueryConditionImpl(Class<?> clz, String alias) {
+        Assert.notNull(clz, String.format(NOT_NULL, "root"));
+        this.rootClass = clz;
         this.alias = alias;
         this.conditionEntries = new ArrayList<>();
         this.aliasEntries = new ArrayList<>();
@@ -214,7 +218,6 @@ public class QueryConditionImpl implements QueryCondition {
     }
 
     private void checkAlias(AliasEntry aliasEntry) {
-        String associationPath = aliasEntry.getAssociationPath();
         String alias = aliasEntry.getAlias();
         Assert.notNull(alias, String.format(NOT_NULL, "alias"));
         if (null != this.alias && this.alias.equals(alias)) {
@@ -225,6 +228,11 @@ public class QueryConditionImpl implements QueryCondition {
                 throw new IllegalArgumentException("The same alias already exists '" + alias + "'");
             }
         }
+    }
+
+    @Override
+    public Class getRootClass() {
+        return rootClass;
     }
 
     @Override
@@ -284,6 +292,10 @@ public class QueryConditionImpl implements QueryCondition {
     @Override
     public boolean isDistinct() {
         return this.distinct;
+    }
+
+    protected void setRootClass(Class<?> clazz) {
+        this.rootClass = clazz;
     }
 
     public class ConditionEntry {

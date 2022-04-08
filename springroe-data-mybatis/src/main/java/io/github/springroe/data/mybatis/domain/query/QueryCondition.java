@@ -10,12 +10,12 @@ import java.util.Map;
  */
 public interface QueryCondition {
 
-    static QueryCondition getInstance() {
-        return new QueryConditionImpl("root_alias_");
+    static QueryCondition forClass(Class<?> clz) {
+        return forClass(clz, clz.getSimpleName());
     }
 
-    static QueryCondition forAlias(String alias) {
-        return new QueryConditionImpl(alias);
+    static QueryCondition forClass(Class<?> clz, String alias) {
+        return new QueryConditionImpl(clz, alias);
     }
 
     QueryCondition add(Condition condition);
@@ -65,6 +65,8 @@ public interface QueryCondition {
     QueryCondition addOrder(Order... orders);
 
     QueryCondition groupBy(String... associationPaths);
+
+    Class getRootClass();
 
     String getAlias();
 

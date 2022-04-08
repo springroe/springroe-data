@@ -27,7 +27,7 @@ public class NegatedConditionWrapper extends AbstractConditionImpl implements Co
 
     private static List<Condition> negateCompoundConditions(List<Condition> conditions) {
         if (conditions != null && !conditions.isEmpty()) {
-            List<Condition> negatedExpressions = new ArrayList();
+            List<Condition> negatedExpressions = new ArrayList<Condition>();
             Iterator iterator = conditions.iterator();
             while (iterator.hasNext()) {
                 Condition condition = (Condition) iterator.next();
