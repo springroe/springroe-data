@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class ProjectionList extends AbstractProjection implements Projection {
 
-    private List<Projection> projections = new ArrayList();
+    private List<Projection> projections = new ArrayList<>();
 
     ProjectionList() {
         super(ProjectionType.CompoundProjection);

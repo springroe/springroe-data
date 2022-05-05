@@ -152,7 +152,10 @@ public interface JpaDataCriterion<T extends Persistable<ID>, ID extends Serializ
      * @param sort  spring data sort
      * @return list result
      */
-    List<T> findAll(Specification<T> spec, String[] joins, Sort sort);
+    default List<T> findAll(Specification<T> spec, String[] joins, Sort sort) {
+        //TODO
+        return Collections.emptyList();
+    }
 
     /**
      * 获取分页结果：按spring data jpa标准进行匹配<br/>
@@ -163,6 +166,9 @@ public interface JpaDataCriterion<T extends Persistable<ID>, ID extends Serializ
      * @param joins    join properties
      * @return page result
      */
-    Page<T> findAll(Specification<T> spec, Pageable pageable, String[] joins);
+    default Page<T> findAll(Specification<T> spec, Pageable pageable, String[] joins) {
+        //TODO
+        return Page.empty();
+    }
 
 }

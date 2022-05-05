@@ -1,0 +1,19 @@
+plugins {
+    id 'org.springframework.boot' version "$springBootVersion"
+    id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
+}
+
+dependencies {
+
+    implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+
+    api project(":springroe-data-jpa-starter")
+
+    runtimeOnly("mysql:mysql-connector-java")
+
+    // QueryDSL
+    implementation("com.querydsl:querydsl-core:${querydslVersion}")
+    implementation("com.querydsl:querydsl-jpa:${querydslVersion}")
+    annotationProcessor("com.querydsl:querydsl-apt:${querydslVersion}:jpa",
+            "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:$hibernateJpaApiVersion")
+}

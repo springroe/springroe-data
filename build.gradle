@@ -50,8 +50,11 @@ subprojects {
         testCompileOnly "org.projectlombok:lombok:$lombokVersion"
         testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
-        testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
-        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+        testImplementation "org.junit.jupiter:junit-jupiter-api:$junitApiVersion"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitEngineVersion"
+
+        testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
+        testImplementation "junit:junit:$junitVersion"
     }
 
     test {

@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    api("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
+    api project(":springroe-data-jpa")
+    api project(":springroe-data-core")
+}
+
+test {
+    useJUnitPlatform()
+}

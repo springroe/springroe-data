@@ -5,15 +5,13 @@ import io.github.springroe.data.core.domain.Persistable;
 import io.github.springroe.data.core.repository.Repository;
 import io.github.springroe.data.core.util.RepositoryUtils;
 import io.github.springroe.data.jpa.criterion.JpaDataCriterion;
-import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.data.jpa.repository.support.JpaMetamodelEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.lang.Nullable;
-import org.springframework.util.ReflectionUtils;
 
 import javax.persistence.EntityManager;
 import java.io.Serializable;
-import java.lang.reflect.Field;
+import java.util.Optional;
 
 /**
  * A super base of jpa type repository <br/>
@@ -29,6 +27,12 @@ public interface JpaRepository<T extends Persistable<ID>, ID extends Serializabl
         Repository<T, ID>,
         org.springframework.data.jpa.repository.JpaRepository<T, ID>,
         JpaDataCriterion<T, ID> {
+
+    @Override
+    <S extends T> S save(S entity);
+
+    @Override
+    Optional<T> findById(ID id);
 
     @Override
     default T getById(ID id) {
