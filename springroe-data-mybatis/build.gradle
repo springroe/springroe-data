@@ -8,6 +8,7 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     // https://mvnrepository.com/artifact/org.mybatis/mybatis
     implementation "org.mybatis:mybatis:$mybatisVersion"
+    implementation "org.springframework.data:spring-data-commons:$springDataCommonVersion"
 
 }
 

@@ -2,6 +2,8 @@ package io.github.springroe.data.jpa.criterion;
 
 import io.github.springroe.data.core.criterion.DataCriterion;
 import io.github.springroe.data.core.domain.Persistable;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.Predicate;
 import org.hibernate.SessionFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,8 +13,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.Predicate;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,15 +23,14 @@ public interface JpaDataCriterion<T extends Persistable<ID>, ID extends Serializ
         JpaSpecificationExecutor<T>, PathHelper {
 
     /**
-     * @return @see javax.persistence.EntityManager
+     * @return @see jakarta.persistence.EntityManager
      */
     EntityManager getEntityManager();
 
     /**
-     *
      * @return @see org.hibernate.SessionFactory
      */
-    default SessionFactory getSessionFactory(){
+    default SessionFactory getSessionFactory() {
         return getEntityManager().unwrap(SessionFactory.class);
     }
 

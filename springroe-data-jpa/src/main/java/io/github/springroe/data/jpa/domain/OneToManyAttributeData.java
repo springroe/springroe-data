@@ -4,7 +4,7 @@ import io.github.springroe.data.core.domain.Persistable;
 import lombok.Data;
 import org.hibernate.metamodel.model.domain.internal.AbstractPluralAttribute;
 
-import javax.persistence.OneToMany;
+import jakarta.persistence.OneToMany;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;

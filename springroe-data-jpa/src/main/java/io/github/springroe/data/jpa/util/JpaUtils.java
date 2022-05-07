@@ -3,9 +3,9 @@ package io.github.springroe.data.jpa.util;
 import io.github.springroe.data.core.domain.Persistable;
 import io.github.springroe.data.jpa.domain.OneToManyAttributeData;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
-import javax.persistence.criteria.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.criteria.*;
 import java.util.List;
 import java.util.Map;
 

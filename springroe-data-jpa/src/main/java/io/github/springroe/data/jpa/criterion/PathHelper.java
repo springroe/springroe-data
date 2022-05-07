@@ -1,14 +1,14 @@
 package io.github.springroe.data.jpa.criterion;
 
-import javax.persistence.criteria.Path;
+import jakarta.persistence.criteria.Path;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public interface PathHelper {
 
     default Path<?> getPath(Path<?> root, String name) {
-        return getPath(root, Arrays.stream(name.split("\\.")).collect(Collectors.toList()));
+        return getPath(root, Arrays.stream(name.split("\\.")).toList());
     }
 
     default Path<?> getPath(Path<?> root, List<String> names) {
