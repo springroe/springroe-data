@@ -6,6 +6,7 @@ ext {
     junitVersion = "5.8.2"
     lombokVersion = "1.18.22"
     springPluginVersion = "2.0.0.RELEASE"
+    springVersion = "6.0.0-M3"
     springBootVersion = "3.0.0-M2"
     springDataCommonVersion = "3.0.0-M3"
     querydslVersion = "5.0.0"

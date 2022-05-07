@@ -36,7 +36,10 @@ subprojects {
 
     dependencies {
 
-        implementation "org.springframework.data:spring-data-commons:$springDataCommonVersion"
+        // https://mvnrepository.com/artifact/org.springframework/spring-tx
+        implementation "org.springframework:spring-tx:${springVersion}"
+        // https://mvnrepository.com/artifact/org.springframework/spring-aop
+        implementation "org.springframework:spring-aop:${springVersion}"
 
         implementation "io.swagger.core.v3:swagger-annotations:$swaggerVersion"
         implementation "io.swagger:swagger-annotations:1.6.5"

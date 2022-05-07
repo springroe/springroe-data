@@ -1,5 +1,4 @@
 dependencies {
     implementation "com.github.jitpack:gradle-simple:1.1"
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter
-    implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
+    api "org.springframework.data:spring-data-commons:$springDataCommonVersion"
 }
